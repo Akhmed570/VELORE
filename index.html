@@ -5,22 +5,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VELORE STORE | Premium Fashion</title>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#f7f7f7;color:#171717}
-header{background:#111;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.logo{font-size:27px;font-weight:900;letter-spacing:4px}
-.logo span{color:#c6a56b}
-header button{background:#c6a56b;color:#111;border:0;padding:12px 18px;border-radius:5px;font-weight:bold;cursor:pointer}
+header{background:#111;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:29px;font-weight:900;letter-spacing:4px}
+.logo span,footer span{color:#c6a56b}
+header button{background:#c6a56b;color:#111;border:0;padding:12px 16px;border-radius:5px;font-weight:bold;cursor:pointer}
+
+.search-area{background:#111;padding:0 6% 22px}
+.search-area input{width:100%;padding:16px 20px;border:1px solid #c6a56b;border-radius:8px;font-size:16px;outline:none}
+
 .hero{background:linear-gradient(90deg,#000b,#0003),url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600') center/cover;height:430px;color:white;display:flex;flex-direction:column;justify-content:center;padding:8%}
 .hero h1{font-size:clamp(38px,7vw,65px);letter-spacing:3px}
 .hero p{margin:15px 0;font-size:17px}
 .hero a{background:#c6a56b;color:#111;padding:14px 25px;text-decoration:none;width:max-content;font-weight:bold}
+
 .section{padding:45px 6%}
 .section h2{text-align:center;font-size:30px;margin-bottom:25px;letter-spacing:2px}
-.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
 .filters button{padding:10px 18px;border:1px solid #222;background:white;cursor:pointer;border-radius:20px}
 .filters button.active,.filters button:hover{background:#111;color:white}
+
+.sort-area{display:flex;justify-content:flex-end;margin-bottom:20px}
+.sort-area select{padding:11px;border:1px solid #ccc;border-radius:6px;background:white}
+
 .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
 .card{background:white;border-radius:8px;overflow:hidden;box-shadow:0 3px 15px #00000012}
 .card img{width:100%;height:260px;object-fit:cover}
@@ -29,17 +39,28 @@ header button{background:#c6a56b;color:#111;border:0;padding:12px 18px;border-ra
 .price{font-weight:bold;color:#a17d43;font-size:19px;margin-bottom:15px}
 .add{width:100%;padding:12px;background:#111;color:white;border:0;cursor:pointer;font-weight:bold}
 .add:hover{background:#c6a56b;color:#111}
+
 .cart{background:#fff;padding:25px 6%;margin:25px 0}
 .cart h2{margin-bottom:20px}
 .cart-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #ddd;gap:10px}
-.cart-item button{padding:5px 10px;cursor:pointer}
+.cart-item button{padding:6px 11px;cursor:pointer}
 .total{font-size:22px;font-weight:bold;margin:20px 0}
 .order{background:#168b48;color:white;border:0;padding:15px 25px;font-size:16px;font-weight:bold;border-radius:5px;cursor:pointer}
+.empty{text-align:center;padding:30px;color:#777}
 footer{background:#111;color:white;text-align:center;padding:30px}
-footer span{color:#c6a56b}
-@media(max-width:600px){header{padding:15px 4%}.logo{font-size:21px}.hero{height:350px}.section{padding:35px 4%}.card img{height:230px}}
+
+@media(max-width:600px){
+ header{padding:17px 4%}
+ .logo{font-size:23px}
+ .search-area{padding:0 4% 18px}
+ .hero{height:350px}
+ .section{padding:35px 4%}
+ .card img{height:230px}
+ .cart-item{flex-wrap:wrap}
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -49,6 +70,12 @@ footer span{color:#c6a56b}
  </button>
 </header>
 
+<div class="search-area">
+ <input type="search" id="searchInput"
+ placeholder="🔍 Mahsulot qidirish..."
+ oninput="searchProducts()">
+</div>
+
 <section class="hero">
  <h1>YOUR STYLE.<br>YOUR WORLD.</h1>
  <p>O‘z uslubingni VELORE bilan yarat.</p>
@@ -57,18 +84,28 @@ footer span{color:#c6a56b}
 
 <section class="section" id="shop">
  <h2>OUR COLLECTION</h2>
+
  <div class="filters">
   <button class="active" onclick="filter('all',this)">Barchasi</button>
   <button onclick="filter('men',this)">Erkaklar</button>
   <button onclick="filter('women',this)">Ayollar</button>
   <button onclick="filter('shoes',this)">Oyoq kiyimlar</button>
  </div>
+
+ <div class="sort-area">
+  <select id="sortSelect" onchange="renderProducts()">
+   <option value="default">Saralash</option>
+   <option value="low">Arzonidan qimmatiga</option>
+   <option value="high">Qimmatidan arzoniga</option>
+  </select>
+ </div>
+
  <div class="products" id="products"></div>
 </section>
 
 <section class="cart" id="cart">
  <h2>🛒 SAVATCHA</h2>
- <div id="cartItems">Savatcha hozircha bo‘sh.</div>
+ <div id="cartItems" class="empty">Savatcha hozircha bo‘sh.</div>
  <div class="total">Jami: <span id="total">0</span> so‘m</div>
  <button class="order" onclick="orderNow()">TELEGRAM ORQALI BUYURTMA BERISH</button>
 </section>
@@ -80,6 +117,7 @@ footer span{color:#c6a56b}
 </footer>
 
 <script>
+
 const products=[
 {id:1,name:"Classic Black Jacket",price:450000,cat:"men",img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=700"},
 {id:2,name:"Premium White Shirt",price:220000,cat:"men",img:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=700"},
@@ -90,72 +128,119 @@ const products=[
 ];
 
 let cart=[];
+let currentCategory="all";
+let searchText="";
 
-function money(n){return n.toLocaleString("uz-UZ")}
+function money(n){
+ return n.toLocaleString("uz-UZ");
+}
 
-function showProducts(category="all"){
- const list=products.filter(p=>category==="all"||p.cat===category);
- document.getElementById("products").innerHTML=list.map(p=>`
+function renderProducts(){
+
+ let list=products.filter(p=>{
+  const categoryMatch=currentCategory==="all"||p.cat===currentCategory;
+  const searchMatch=p.name.toLowerCase().includes(searchText);
+  return categoryMatch&&searchMatch;
+ });
+
+ const sort=document.getElementById("sortSelect").value;
+
+ if(sort==="low")list.sort((a,b)=>a.price-b.price);
+ if(sort==="high")list.sort((a,b)=>b.price-a.price);
+
+ document.getElementById("products").innerHTML=list.length?
+ list.map(p=>`
  <div class="card">
   <img src="${p.img}" alt="${p.name}" loading="lazy">
   <div class="info">
    <h3>${p.name}</h3>
    <div class="price">${money(p.price)} so'm</div>
-   <button class="add" onclick="addCart(${p.id})">SAVATCHAGA QO‘SHISH</button>
+   <button class="add" onclick="addCart(${p.id})">
+    SAVATCHAGA QO‘SHISH
+   </button>
   </div>
- </div>`).join("");
+ </div>`).join("")
+ :'<div class="empty">Bu mahsulot topilmadi 😔</div>';
+}
+
+function searchProducts(){
+ searchText=document.getElementById("searchInput").value.toLowerCase().trim();
+ renderProducts();
 }
 
 function filter(category,btn){
+ currentCategory=category;
  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
  btn.classList.add("active");
- showProducts(category);
+ renderProducts();
 }
 
 function addCart(id){
  const item=cart.find(p=>p.id===id);
+
  if(item)item.qty++;
  else cart.push({...products.find(p=>p.id===id),qty:1});
+
  updateCart();
+ alert("Mahsulot savatchaga qo‘shildi!");
 }
 
 function changeQty(id,amount){
  const item=cart.find(p=>p.id===id);
  if(!item)return;
+
  item.qty+=amount;
- if(item.qty<=0)cart=cart.filter(p=>p.id!==id);
+
+ if(item.qty<=0){
+  cart=cart.filter(p=>p.id!==id);
+ }
+
  updateCart();
 }
 
 function updateCart(){
- document.getElementById("count").textContent=cart.reduce((s,p)=>s+p.qty,0);
+
+ document.getElementById("count").textContent=
+ cart.reduce((s,p)=>s+p.qty,0);
+
  document.getElementById("cartItems").innerHTML=cart.length?
  cart.map(p=>`
  <div class="cart-item">
- <span>${p.name}</span>
- <span>
- <button onclick="changeQty(${p.id},-1)">−</button>
- ${p.qty}
- <button onclick="changeQty(${p.id},1)">+</button>
- </span>
- <b>${money(p.price*p.qty)} so'm</b>
- </div>`).join(""):"Savatcha hozircha bo‘sh.";
- document.getElementById("total").textContent=money(cart.reduce((s,p)=>s+p.price*p.qty,0));
+  <span>${p.name}</span>
+  <span>
+   <button onclick="changeQty(${p.id},-1)">−</button>
+   ${p.qty}
+   <button onclick="changeQty(${p.id},1)">+</button>
+  </span>
+  <b>${money(p.price*p.qty)} so'm</b>
+ </div>`).join("")
+ :'<div class="empty">Savatcha hozircha bo‘sh.</div>';
+
+ document.getElementById("total").textContent=
+ money(cart.reduce((s,p)=>s+p.price*p.qty,0));
 }
 
 function orderNow(){
+
  if(!cart.length){
   alert("Avval savatchaga mahsulot qo‘shing!");
   return;
  }
- const message="Assalomu alaykum! VELORE STORE dan buyurtma:\\n"+
- cart.map(p=>p.name+" x "+p.qty+" = "+money(p.price*p.qty)+" so'm").join("\\n")+
- "\\nJami: "+money(cart.reduce((s,p)=>s+p.price*p.qty,0))+" so'm";
- const url="https://t.me/share/url?url="+encodeURIComponent("https://akhmed570.github.io/VELORE-STORE/")+"&text="+encodeURIComponent(message);
+
+ const message=
+ "Assalomu alaykum! VELORE STORE dan buyurtma:\n"+
+ cart.map(p=>p.name+" x "+p.qty+" = "+money(p.price*p.qty)+" so'm").join("\n")+
+ "\nJami: "+money(cart.reduce((s,p)=>s+p.price*p.qty,0))+" so'm";
+
+ const url="https://t.me/share/url?url="+
+ encodeURIComponent("https://akhmed570.github.io/VELORE-STORE/")+
+ "&text="+encodeURIComponent(message);
+
  window.open(url,"_blank");
 }
 
-showProducts();
+renderProducts();
+
 </script>
 </body>
 </html>
