@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELORE STORE</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial;background:#f7f5f1;color:#171717}
+header{background:#111;color:white;padding:22px;display:flex;justify-content:space-between}
+.logo{font-size:27px;letter-spacing:4px;font-weight:bold}
+.hero{text-align:center;background:#ded8ce;padding:75px 15px}
+.hero h1{font-size:45px;letter-spacing:5px}
+.hero p{margin:15px}
+button{background:#111;color:white;border:0;padding:13px 22px;cursor:pointer}
+h2{text-align:center;margin:35px}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:15px}
+.product{background:white;text-align:center;padding:10px}
+.product img{width:100%;height:190px;object-fit:cover}
+.product h3{margin:12px}
+.product p{margin:8px}
+.search{display:block;margin:20px auto;padding:13px;width:85%;max-width:400px}
+footer{background:#111;color:white;text-align:center;padding:30px;margin-top:30px}
+@media(min-width:700px){.products{grid-template-columns:repeat(4,1fr);padding:30px 7%}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">VELORE</div>
+<div>🛍 Savat: <b id="count">0</b></div>
+</header>
+<section class="hero">
+<h1>VELORE STORE</h1>
+<p>Yangi uslub. Yangi sen.</p>
+<button onclick="document.getElementById('shop').scrollIntoView()">Xarid qilish</button>
+</section>
+<h2 id="shop">Yangi kolleksiya</h2>
+<input class="search" id="search" placeholder="Mahsulot qidirish..." oninput="filterProducts()">
+<div class="products" id="products">
+<div class="product">
+<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500">
+<h3>Classic T-Shirt</h3><p>150 000 so'm</p>
+<button onclick="add()">Savatga qo'shish</button>
+</div>
+<div class="product">
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500">
+<h3>Sport Shoes</h3><p>450 000 so'm</p>
+<button onclick="add()">Savatga qo'shish</button>
+</div>
+<div class="product">
+<img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=500">
+<h3>Fashion Jeans</h3><p>280 000 so'm</p>
+<button onclick="add()">Savatga qo'shish</button>
+</div>
+<div class="product">
+<img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500">
+<h3>Luxury Bag</h3><p>350 000 so'm</p>
+<button onclick="add()">Savatga qo'shish</button>
+</div>
+</div>
+<footer>
+<h2>VELORE STORE</h2>
+<p>Fashion is our passion.</p>
+<p>© 2026 VELORE STORE</p>
+</footer>
+<script>
+let count=0;
+function add(){
+count++;
+document.getElementById('count').textContent=count;
+}
+function filterProducts(){
+let q=document.getElementById('search').value.toLowerCase();
+document.querySelectorAll('.product').forEach(p=>{
+p.style.display=p.innerText.toLowerCase().includes(q)?'block':'none';
+});
+}
+</script>
+</body>
+</html>
