@@ -1,1 +1,1 @@
-# veloura-store
+#VELORE
