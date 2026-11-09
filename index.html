@@ -1,1 +1,161 @@
-https://images.unsplash.com/photo-1542272604-787c383553d8?w=600
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELORE STORE | Premium Fashion</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f7f7f7;color:#171717}
+header{background:#111;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.logo{font-size:27px;font-weight:900;letter-spacing:4px}
+.logo span{color:#c6a56b}
+header button{background:#c6a56b;color:#111;border:0;padding:12px 18px;border-radius:5px;font-weight:bold;cursor:pointer}
+.hero{background:linear-gradient(90deg,#000b,#0003),url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600') center/cover;height:430px;color:white;display:flex;flex-direction:column;justify-content:center;padding:8%}
+.hero h1{font-size:clamp(38px,7vw,65px);letter-spacing:3px}
+.hero p{margin:15px 0;font-size:17px}
+.hero a{background:#c6a56b;color:#111;padding:14px 25px;text-decoration:none;width:max-content;font-weight:bold}
+.section{padding:45px 6%}
+.section h2{text-align:center;font-size:30px;margin-bottom:25px;letter-spacing:2px}
+.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.filters button{padding:10px 18px;border:1px solid #222;background:white;cursor:pointer;border-radius:20px}
+.filters button.active,.filters button:hover{background:#111;color:white}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.card{background:white;border-radius:8px;overflow:hidden;box-shadow:0 3px 15px #00000012}
+.card img{width:100%;height:260px;object-fit:cover}
+.info{padding:17px}
+.info h3{font-size:17px;margin-bottom:9px}
+.price{font-weight:bold;color:#a17d43;font-size:19px;margin-bottom:15px}
+.add{width:100%;padding:12px;background:#111;color:white;border:0;cursor:pointer;font-weight:bold}
+.add:hover{background:#c6a56b;color:#111}
+.cart{background:#fff;padding:25px 6%;margin:25px 0}
+.cart h2{margin-bottom:20px}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #ddd;gap:10px}
+.cart-item button{padding:5px 10px;cursor:pointer}
+.total{font-size:22px;font-weight:bold;margin:20px 0}
+.order{background:#168b48;color:white;border:0;padding:15px 25px;font-size:16px;font-weight:bold;border-radius:5px;cursor:pointer}
+footer{background:#111;color:white;text-align:center;padding:30px}
+footer span{color:#c6a56b}
+@media(max-width:600px){header{padding:15px 4%}.logo{font-size:21px}.hero{height:350px}.section{padding:35px 4%}.card img{height:230px}}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">VELORE<span>.</span></div>
+ <button onclick="document.getElementById('cart').scrollIntoView({behavior:'smooth'})">
+ 🛒 Savatcha (<span id="count">0</span>)
+ </button>
+</header>
+
+<section class="hero">
+ <h1>YOUR STYLE.<br>YOUR WORLD.</h1>
+ <p>O‘z uslubingni VELORE bilan yarat.</p>
+ <a href="#shop">XARIDLARNI BOSHLASH →</a>
+</section>
+
+<section class="section" id="shop">
+ <h2>OUR COLLECTION</h2>
+ <div class="filters">
+  <button class="active" onclick="filter('all',this)">Barchasi</button>
+  <button onclick="filter('men',this)">Erkaklar</button>
+  <button onclick="filter('women',this)">Ayollar</button>
+  <button onclick="filter('shoes',this)">Oyoq kiyimlar</button>
+ </div>
+ <div class="products" id="products"></div>
+</section>
+
+<section class="cart" id="cart">
+ <h2>🛒 SAVATCHA</h2>
+ <div id="cartItems">Savatcha hozircha bo‘sh.</div>
+ <div class="total">Jami: <span id="total">0</span> so‘m</div>
+ <button class="order" onclick="orderNow()">TELEGRAM ORQALI BUYURTMA BERISH</button>
+</section>
+
+<footer>
+ <h2>VELORE<span>.</span> STORE</h2>
+ <p style="margin-top:12px">Premium fashion. Premium lifestyle.</p>
+ <p style="margin-top:15px">© 2026 VELORE STORE. All rights reserved.</p>
+</footer>
+
+<script>
+const products=[
+{id:1,name:"Classic Black Jacket",price:450000,cat:"men",img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=700"},
+{id:2,name:"Premium White Shirt",price:220000,cat:"men",img:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=700"},
+{id:3,name:"Women's Fashion Outfit",price:380000,cat:"women",img:"https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=700"},
+{id:4,name:"Elegant Dress",price:520000,cat:"women",img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=700"},
+{id:5,name:"Premium Sneakers",price:390000,cat:"shoes",img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700"},
+{id:6,name:"Classic Shoes",price:480000,cat:"shoes",img:"https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=700"}
+];
+
+let cart=[];
+
+function money(n){return n.toLocaleString("uz-UZ")}
+
+function showProducts(category="all"){
+ const list=products.filter(p=>category==="all"||p.cat===category);
+ document.getElementById("products").innerHTML=list.map(p=>`
+ <div class="card">
+  <img src="${p.img}" alt="${p.name}" loading="lazy">
+  <div class="info">
+   <h3>${p.name}</h3>
+   <div class="price">${money(p.price)} so'm</div>
+   <button class="add" onclick="addCart(${p.id})">SAVATCHAGA QO‘SHISH</button>
+  </div>
+ </div>`).join("");
+}
+
+function filter(category,btn){
+ document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+ showProducts(category);
+}
+
+function addCart(id){
+ const item=cart.find(p=>p.id===id);
+ if(item)item.qty++;
+ else cart.push({...products.find(p=>p.id===id),qty:1});
+ updateCart();
+}
+
+function changeQty(id,amount){
+ const item=cart.find(p=>p.id===id);
+ if(!item)return;
+ item.qty+=amount;
+ if(item.qty<=0)cart=cart.filter(p=>p.id!==id);
+ updateCart();
+}
+
+function updateCart(){
+ document.getElementById("count").textContent=cart.reduce((s,p)=>s+p.qty,0);
+ document.getElementById("cartItems").innerHTML=cart.length?
+ cart.map(p=>`
+ <div class="cart-item">
+ <span>${p.name}</span>
+ <span>
+ <button onclick="changeQty(${p.id},-1)">−</button>
+ ${p.qty}
+ <button onclick="changeQty(${p.id},1)">+</button>
+ </span>
+ <b>${money(p.price*p.qty)} so'm</b>
+ </div>`).join(""):"Savatcha hozircha bo‘sh.";
+ document.getElementById("total").textContent=money(cart.reduce((s,p)=>s+p.price*p.qty,0));
+}
+
+function orderNow(){
+ if(!cart.length){
+  alert("Avval savatchaga mahsulot qo‘shing!");
+  return;
+ }
+ const message="Assalomu alaykum! VELORE STORE dan buyurtma:\\n"+
+ cart.map(p=>p.name+" x "+p.qty+" = "+money(p.price*p.qty)+" so'm").join("\\n")+
+ "\\nJami: "+money(cart.reduce((s,p)=>s+p.price*p.qty,0))+" so'm";
+ const url="https://t.me/share/url?url="+encodeURIComponent("https://akhmed570.github.io/VELORE-STORE/")+"&text="+encodeURIComponent(message);
+ window.open(url,"_blank");
+}
+
+showProducts();
+</script>
+</body>
+</html>
