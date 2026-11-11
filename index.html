@@ -183,8 +183,7 @@ import { createClient } from
 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 /* SUPABASE SOZLAMALARI */
 const SUPABASE_URL="https://uacjpccxtseayvphyhsn.supabase.co";
-/* Bu yerga haqiqiy sb_publishable_ kalitini kiriting */
-const SUPABASE_PUBLISHABLE_KEY="BU_YERGA_HAQIQIY_SB_PUBLISHABLE_KEY";
+const SUPABASE_PUBLISHABLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhY2pwY2N4dHNlYXl2cGh5aHNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyODEwNTgsImV4cCI6MjEwOTg1NzA1OH0.MChmiWzRVuFox7ghOsS_F60QgKkWTK10JLlFQmwNIKQ";
 const supabase=createClient(
  SUPABASE_URL,
  SUPABASE_PUBLISHABLE_KEY
@@ -262,7 +261,9 @@ document.getElementById("signupBtn").addEventListener("click",async()=>{
  }
  if(data.session){
   showStatus("Akkaunt yaratildi!");
-  if(accountType==="seller") await ensureSellerApplication();
+  if(accountType==="seller"){
+   await ensureSellerApplication();
+  }
  }else{
   showStatus("Akkaunt yaratildi. Emailingizni tasdiqlang, keyin tizimga kiring.");
  }
@@ -290,7 +291,11 @@ document.getElementById("loginBtn").addEventListener("click",async()=>{
 /* HISOBDAN CHIQISH */
 document.getElementById("logoutBtn").addEventListener("click",async()=>{
  const {error}=await supabase.auth.signOut();
- showStatus(error?"Xatolik: "+error.message:"Hisobdan chiqdingiz.");
+ showStatus(
+  error
+   ?"Xatolik: "+error.message
+   :"Hisobdan chiqdingiz."
+ );
 });
 /* OLDIN KIRGAN FOYDALANUVCHINI TEKSHIRISH */
 const {data:sessionData}=await supabase.auth.getSession();
