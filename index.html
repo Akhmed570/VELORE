@@ -464,4 +464,378 @@ class _StoreHomeState extends State<StoreHome> {
 <meta name="application-name" content="VELORE">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icon.png">
-Could not resolve to a Repository with the name 'Akhmed570/ VELORE-STORE'.
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="VELORE">
+  <title>VELORE — Premium Shopping</title>
+  <style>
+    :root {
+      --black:#080808;
+      --panel:#141414;
+      --gold:#d6ad55;
+      --light:#f5e4b7;
+      --muted:#aaa;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      background:var(--black);
+      color:#fff;
+      font-family:Arial, sans-serif;
+    }
+    button,input { font:inherit; }
+    button { cursor:pointer; }
+    header {
+      position:sticky;
+      top:0;
+      z-index:10;
+      background:#090909f5;
+      border-bottom:1px solid #9d793a55;
+      padding:14px 5%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .brand {
+      color:var(--gold);
+      font-family:Georgia,serif;
+      font-size:30px;
+      letter-spacing:5px;
+      font-weight:bold;
+      text-decoration:none;
+    }
+    .cart-button {
+      background:transparent;
+      border:1px solid var(--gold);
+      color:var(--gold);
+      border-radius:30px;
+      padding:10px 15px;
+    }
+    .hero {
+      text-align:center;
+      padding:65px 20px 55px;
+      background:radial-gradient(ellipse at center,#332713 0%,#100e0a 40%,#080808 75%);
+    }
+    .hero h1 {
+      font-family:Georgia,serif;
+      color:var(--gold);
+      font-size:clamp(40px,9vw,76px);
+      letter-spacing:9px;
+      margin:0 0 12px;
+    }
+    .hero p { color:#ddd; letter-spacing:2px; }
+    .hero button,.gold-button {
+      margin-top:20px;
+      padding:13px 25px;
+      border:0;
+      border-radius:4px;
+      background:linear-gradient(120deg,#9c7028,#f4d98e,#b58a3e);
+      color:#100d07;
+      font-weight:bold;
+    }
+    .section {
+      padding:30px 5%;
+      max-width:1250px;
+      margin:auto;
+    }
+    .section h2 {
+      color:var(--gold);
+      font-family:Georgia,serif;
+      letter-spacing:2px;
+    }
+    .tools {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:20px 0;
+    }
+    .tools input {
+      flex:1;
+      min-width:180px;
+      background:#171717;
+      border:1px solid #514124;
+      border-radius:5px;
+      padding:13px;
+      color:white;
+    }
+    .categories {
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+      margin:18px 0 25px;
+    }
+    .category {
+      background:#171717;
+      border:1px solid #66502b;
+      color:#e5c77f;
+      padding:9px 15px;
+      border-radius:30px;
+    }
+    .category.active {
+      background:var(--gold);
+      color:#100d07;
+    }
+    .products {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+      gap:17px;
+    }
+    .product {
+      background:var(--panel);
+      border:1px solid #332a1b;
+      border-radius:9px;
+      overflow:hidden;
+      transition:.2s;
+    }
+    .product:hover { border-color:var(--gold); transform:translateY(-3px); }
+    .product-image {
+      height:175px;
+      background:linear-gradient(145deg,#292929,#111);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#8b713e;
+      font-size:48px;
+    }
+    .product-info { padding:13px; }
+    .product-info h3 { font-size:15px; margin:0 0 9px; }
+    .price { color:var(--gold); font-weight:bold; }
+    .add {
+      width:100%;
+      margin-top:12px;
+      padding:10px;
+      background:transparent;
+      border:1px solid var(--gold);
+      color:var(--gold);
+      border-radius:4px;
+    }
+    .add:hover { background:var(--gold); color:#111; }
+    .cart-panel {
+      display:none;
+      position:fixed;
+      z-index:20;
+      inset:0;
+      background:#000b;
+      justify-content:center;
+      align-items:center;
+      padding:15px;
+    }
+    .cart-content {
+      background:#151515;
+      border:1px solid var(--gold);
+      border-radius:10px;
+      width:min(480px,100%);
+      max-height:85vh;
+      overflow:auto;
+      padding:22px;
+    }
+    .cart-content h2 { color:var(--gold); }
+    .cart-row {
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 0;
+      border-bottom:1px solid #333;
+    }
+    .cart-row button {
+      background:none;
+      color:#e7bd68;
+      border:0;
+    }
+    .total { color:var(--gold); font-size:19px; font-weight:bold; }
+    .close {
+      float:right;
+      background:none;
+      color:white;
+      border:0;
+      font-size:25px;
+    }
+    footer {
+      border-top:1px solid #514124;
+      text-align:center;
+      padding:30px 15px;
+      color:#aaa;
+      margin-top:45px;
+    }
+    footer strong { color:var(--gold); letter-spacing:3px; }
+    @media(max-width:480px) {
+      header { padding:12px 4%; }
+      .brand { font-size:24px; }
+      .hero { padding:55px 15px; }
+      .products { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+      .product-image { height:145px; }
+      .product-info { padding:10px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#">VELORE</a>
+  <button class="cart-button" onclick="openCart()">
+    🛍 Savatcha (<span id="cartCount">0</span>)
+  </button>
+</header>
+
+<section class="hero">
+  <h1>VELORE</h1>
+  <p>STYLE • QUALITY • ELEGANCE</p>
+  <p>Premium shopping — yangi uslubni kashf eting</p>
+  <button onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">
+    Xaridni boshlash
+  </button>
+</section>
+
+<main class="section" id="catalog">
+  <h2>Bizning mahsulotlar</h2>
+
+  <div class="tools">
+    <input id="search" type="search" placeholder="Mahsulot qidirish..." oninput="renderProducts()">
+  </div>
+
+  <div class="categories" id="categories">
+    <button class="category active" onclick="setCategory('Barchasi',this)">Barchasi</button>
+    <button class="category" onclick="setCategory('Kiyim',this)">Kiyim</button>
+    <button class="category" onclick="setCategory('Oyoq kiyim',this)">Oyoq kiyim</button>
+    <button class="category" onclick="setCategory('Aksessuar',this)">Aksessuar</button>
+  </div>
+
+  <div class="products" id="products"></div>
+</main>
+
+<div class="cart-panel" id="cartPanel" onclick="if(event.target===this)closeCart()">
+  <div class="cart-content">
+    <button class="close" onclick="closeCart()">×</button>
+    <h2>Savatcha</h2>
+    <div id="cartItems"></div>
+    <p class="total">Jami: <span id="total">0</span> so'm</p>
+    <button class="gold-button" onclick="copyOrder()">Buyurtmani nusxalash</button>
+    <p style="color:#aaa;font-size:12px">Buyurtma matnini nusxalab, sotuvchiga yuboring.</p>
+  </div>
+</div>
+
+<footer>
+  <strong>VELORE</strong>
+  <p>Premium shopping experience</p>
+  <p>© 2026 VELORE. Barcha huquqlar himoyalangan.</p>
+</footer>
+
+<script>
+const products = [
+  {id:1,name:"Premium futbolka",category:"Kiyim",price:180000,emoji:"👕"},
+  {id:2,name:"Klassik ko'ylak",category:"Kiyim",price:250000,emoji:"👔"},
+  {id:3,name:"Sport kiyimi",category:"Kiyim",price:320000,emoji:"🥋"},
+  {id:4,name:"Premium krossovka",category:"Oyoq kiyim",price:450000,emoji:"👟"},
+  {id:5,name:"Klassik tufli",category:"Oyoq kiyim",price:520000,emoji:"👞"},
+  {id:6,name:"Qo'l soati",category:"Aksessuar",price:380000,emoji:"⌚"},
+  {id:7,name:"Ko'zoynak",category:"Aksessuar",price:150000,emoji:"🕶️"},
+  {id:8,name:"Sumka",category:"Aksessuar",price:290000,emoji:"👜"}
+];
+
+let cart = [];
+let currentCategory = "Barchasi";
+
+function money(value) {
+  return value.toLocaleString("uz-UZ");
+}
+
+function renderProducts() {
+  const query = document.getElementById("search").value.toLowerCase();
+  const filtered = products.filter(p =>
+    (currentCategory === "Barchasi" || p.category === currentCategory) &&
+    p.name.toLowerCase().includes(query)
+  );
+
+  document.getElementById("products").innerHTML = filtered.length
+    ? filtered.map(p => `
+      <article class="product">
+        <div class="product-image">${p.emoji}</div>
+        <div class="product-info">
+          <h3>${p.name}</h3>
+          <div class="price">${money(p.price)} so'm</div>
+          <button class="add" onclick="addToCart(${p.id})">Savatchaga qo'shish</button>
+        </div>
+      </article>
+    `).join("")
+    : "<p>Mahsulot topilmadi.</p>";
+}
+
+function setCategory(category,button) {
+  currentCategory = category;
+  document.querySelectorAll(".category").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  renderProducts();
+}
+
+function addToCart(id) {
+  const item = cart.find(p=>p.id===id);
+  if(item) item.qty++;
+  else cart.push({...products.find(p=>p.id===id),qty:1});
+  updateCart();
+}
+
+function updateCart() {
+  const count = cart.reduce((sum,p)=>sum+p.qty,0);
+  const total = cart.reduce((sum,p)=>sum+p.price*p.qty,0);
+  document.getElementById("cartCount").textContent = count;
+  document.getElementById("total").textContent = money(total);
+
+  document.getElementById("cartItems").innerHTML = cart.length
+    ? cart.map(p=>`
+      <div class="cart-row">
+        <div>${p.name}<br><small>${p.qty} × ${money(p.price)} so'm</small></div>
+        <div>
+          ${money(p.price*p.qty)} so'm
+          <button onclick="removeItem(${p.id})">✕</button>
+        </div>
+      </div>
+    `).join("")
+    : "<p>Savatcha hozircha bo'sh.</p>";
+}
+
+function removeItem(id) {
+  cart = cart.filter(p=>p.id!==id);
+  updateCart();
+}
+
+function openCart() {
+  document.getElementById("cartPanel").style.display="flex";
+  updateCart();
+}
+
+function closeCart() {
+  document.getElementById("cartPanel").style.display="none";
+}
+
+function copyOrder() {
+  if(!cart.length) {
+    alert("Savatcha bo'sh!");
+    return;
+  }
+
+  const lines = cart.map(p=>`${p.name} — ${p.qty} dona — ${money(p.price*p.qty)} so'm`);
+  const total = cart.reduce((sum,p)=>sum+p.price*p.qty,0);
+  const message = "VELORE BUYURTMA\n\n" + lines.join("\n") +
+    "\n\nJami: " + money(total) + " so'm\nIsm: \nTelefon: \nManzil: ";
+
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(message)
+      .then(()=>alert("Buyurtma matni nusxalandi!"))
+      .catch(()=>prompt("Buyurtmani nusxalash uchun matn:",message));
+  } else {
+    prompt("Buyurtmani nusxalash uchun matn:",message);
+  }
+}
+
+renderProducts();
+updateCart();
+</script>
+
+</body>
+</html>
