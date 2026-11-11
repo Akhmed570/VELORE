@@ -8,12 +8,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="VELORE">
 <title>VELORE | Premium Fashion</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#090909;color:#f5f1e8;font-family:Arial,sans-serif}
-header{height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #29241a;position:sticky;top:0;background:#090909;z-index:10}
+header{min-height:70px;display:flex;align-items:center;justify-content:space-between;padding:12px 6%;border-bottom:1px solid #29241a;position:sticky;top:0;background:#090909;z-index:10}
 .logo{font-size:29px;font-weight:900;letter-spacing:5px;color:#d8b66a}
-nav{display:flex;gap:22px}
+nav{display:flex;gap:18px;flex-wrap:wrap}
 nav a{color:#ddd;text-decoration:none;font-size:13px}
 button{cursor:pointer}
 .hero{min-height:490px;padding:100px 8%;display:flex;align-items:center;background:linear-gradient(90deg,#080808 10%,#080808d9 55%,#0005),url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400') center/cover}
@@ -42,13 +43,20 @@ button{cursor:pointer}
 .about{background:#12110e;text-align:center;padding:65px 10%}
 .about h2{color:#d8b66a;letter-spacing:3px;margin-bottom:18px}
 .about p{color:#c4bfb4;line-height:1.9;max-width:700px;margin:auto}
+.account{padding:55px 6%;background:#111;text-align:center}
+.account h2{color:#d8b66a;margin-bottom:15px;letter-spacing:3px}
+.account>p{color:#bbb;line-height:1.7}
+.auth-box{max-width:430px;margin:25px auto;padding:24px;background:#181818;border:1px solid #51452b;border-radius:8px}
+.auth-box input,.auth-box select{width:100%;padding:13px;margin:7px 0;background:#090909;color:white;border:1px solid #51452b;border-radius:4px}
+.auth-box button{width:100%;padding:13px;margin-top:12px;background:#d8b66a;color:#111;border:0;font-weight:bold;border-radius:3px}
+.auth-status{color:#d8b66a;margin-top:15px;line-height:1.6;overflow-wrap:anywhere}
 .cart{position:fixed;right:18px;bottom:20px;background:#d8b66a;color:#111;border:0;border-radius:40px;padding:16px 22px;font-weight:bold;z-index:20;box-shadow:0 5px 25px #0008}
 footer{text-align:center;padding:30px;color:#8d877b;border-top:1px solid #29241a;font-size:12px}
 @media(max-width:900px){.products{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){
- header{padding:0 5%;height:65px}
+ header{padding:12px 5%}
  .logo{font-size:23px}
- nav{gap:10px}
+ nav{gap:9px}
  nav a{font-size:11px}
  .hero{min-height:430px;padding:70px 7%}
  .section{padding:48px 4%}
@@ -57,9 +65,11 @@ footer{text-align:center;padding:30px;color:#8d877b;border-top:1px solid #29241a
  .product-info{padding:12px}
  .product-info h3{font-size:13px}
  .product-info button{font-size:11px;padding:11px 5px}
+ .auth-box{padding:17px}
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -67,6 +77,7 @@ footer{text-align:center;padding:30px;color:#8d877b;border-top:1px solid #29241a
  <nav>
   <a href="#home">Bosh sahifa</a>
   <a href="#shop">Katalog</a>
+  <a href="#account">Hisob</a>
   <a href="#about">Biz haqimizda</a>
  </nav>
 </header>
@@ -98,6 +109,31 @@ footer{text-align:center;padding:30px;color:#8d877b;border-top:1px solid #29241a
  <div class="products" id="products"></div>
 </section>
 
+<section class="account" id="account">
+ <h2>VELORE ACCOUNT</h2>
+ <p>Mijoz yoki sotuvchi sifatida ro‘yxatdan o‘ting.</p>
+
+ <div class="auth-box">
+  <input id="fullName" placeholder="Ism va familiya">
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Parol (kamida 6 belgi)">
+
+  <select id="accountType">
+   <option value="customer">Mijoz</option>
+   <option value="seller">Sotuvchi</option>
+  </select>
+
+  <input id="storeName" placeholder="Do‘kon nomi (sotuvchilar uchun)">
+  <input id="phone" placeholder="Telefon raqami">
+
+  <button id="signupBtn">RO‘YXATDAN O‘TISH</button>
+  <button id="loginBtn">TIZIMGA KIRISH</button>
+  <button id="logoutBtn">CHIQISH</button>
+
+  <div class="auth-status" id="authStatus">Hisobingizga kiring yoki ro‘yxatdan o‘ting.</div>
+ </div>
+</section>
+
 <section class="about" id="about">
  <h2>ABOUT VELORE</h2>
  <p>VELORE — nafislik, sifat va zamonaviy uslub uyg‘unligi. Biz sizga kundalik hayot va maxsus lahzalar uchun tanlangan moda mahsulotlarini taqdim etamiz.</p>
@@ -120,41 +156,213 @@ const items=[
  {name:"Streetwear hoodie",price:280000,cat:"Kiyim",img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600"},
  {name:"Sport krossovka",price:410000,cat:"Oyoq kiyim",img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"}
 ];
+
 let category="Barchasi";
 let cart=[];
 
 function renderProducts(){
  const q=document.getElementById("search").value.toLowerCase();
- const filtered=items.filter(p=>(category==="Barchasi"||p.cat===category)&&p.name.toLowerCase().includes(q));
- document.getElementById("products").innerHTML=filtered.map(p=>`
+ const filtered=items.filter(p=>
+  (category==="Barchasi"||p.cat===category)&&
+  p.name.toLowerCase().includes(q)
+ );
+
+ document.getElementById("products").innerHTML=
+ filtered.map(p=>`
  <div class="product">
- <img src="${p.img}" alt="${p.name}" loading="lazy">
- <div class="product-info">
- <h3>${p.name}</h3>
- <div class="price">${p.price.toLocaleString("uz-UZ")} so‘m</div>
- <button onclick="addCart('${p.name}')">SAVATCHAGA QO‘SHISH</button>
- </div></div>`).join("")||"<p>Mahsulot topilmadi.</p>";
+  <img src="${p.img}" alt="${p.name}" loading="lazy">
+  <div class="product-info">
+   <h3>${p.name}</h3>
+   <div class="price">${p.price.toLocaleString("uz-UZ")} so‘m</div>
+   <button onclick="addCart('${p.name}')">SAVATCHAGA QO‘SHISH</button>
+  </div>
+ </div>`).join("")||"<p>Mahsulot topilmadi.</p>";
 }
+
 function setCategory(c,btn){
  category=c;
  document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
  btn.classList.add("active");
  renderProducts();
 }
+
 function addCart(name){
  cart.push(name);
  document.getElementById("cartCount").textContent=cart.length;
  alert(name+" savatchaga qo‘shildi!");
 }
+
 function showCart(){
- if(!cart.length){alert("Savatcha hozircha bo‘sh.");return;}
+ if(!cart.length){
+  alert("Savatcha hozircha bo‘sh.");
+  return;
+ }
  let text="VELORE BUYURTMA:\n\n";
  cart.forEach((n,i)=>text+=(i+1)+". "+n+"\n");
- text+="\nBuyurtma berish uchun WhatsApp orqali bog‘laning.";
- const url="https://wa.me/?text="+encodeURIComponent(text);
- window.open(url,"_blank");
+ text+="\nBuyurtma berish uchun VELORE bilan bog‘laning.";
+ window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
 }
+
 renderProducts();
 </script>
+
+<script type="module">
+import { createClient } from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+/* SUPABASE SOZLAMALARI */
+const SUPABASE_URL = 
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+"https://uacjpccxtseayvphyhsn.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"BU_YERGA_TOLIQ_SB_PUBLISHABLE_KEYNI_QOYING";
+
+const supabase = createClient(
+ SUPABASE_URL,
+ SUPABASE_PUBLISHABLE_KEY
+);
+
+const statusBox=document.getElementById("authStatus");
+
+function showStatus(message){
+ statusBox.textContent=message;
+}
+
+/* SOTUVCHI ARIZASINI YUBORISH */
+async function ensureSellerApplication(){
+ const {data:userData,error:userError}=await supabase.auth.getUser();
+
+ if(userError){
+  showStatus("Hisobni tekshirishda xatolik: "+userError.message);
+  return;
+ }
+
+ const user=userData.user;
+ if(!user || user.user_metadata.account_type!=="seller") return;
+
+ const {data:existing,error:readError}=await supabase
+  .from("sellers")
+  .select("status")
+  .eq("id",user.id)
+  .maybeSingle();
+
+ if(readError){
+  showStatus("Sotuvchi ma’lumotini tekshirishda xatolik: "+readError.message);
+  return;
+ }
+
+ if(existing){
+  showStatus("Sotuvchi arizangiz holati: "+existing.status);
+  return;
+ }
+
+ const meta=user.user_metadata;
+
+ const {error}=await supabase.from("sellers").insert({
+  id:user.id,
+  full_name:meta.full_name,
+  store_name:meta.store_name,
+  phone:meta.phone,
+  status:"pending"
+ });
+
+ if(error){
+  showStatus("Ariza yuborilmadi: "+error.message);
+ }else{
+  showStatus("Do‘kon ochish arizangiz yuborildi. Admin tasdig‘ini kuting.");
+ }
+}
+
+/* RO‘YXATDAN O‘TISH */
+document.getElementById("signupBtn").addEventListener("click",async()=>{
+ const fullName=document.getElementById("fullName").value.trim();
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ const accountType=document.getElementById("accountType").value;
+ const storeName=document.getElementById("storeName").value.trim();
+ const phone=document.getElementById("phone").value.trim();
+
+ if(!fullName||!email||password.length<6){
+  showStatus("Ism, email va kamida 6 belgili parolni kiriting.");
+  return;
+ }
+
+ if(accountType==="seller"&&(!storeName||!phone)){
+  showStatus("Sotuvchi uchun do‘kon nomi va telefon raqami kerak.");
+  return;
+ }
+
+ showStatus("Ro‘yxatdan o‘tilmoqda...");
+
+ const {data,error}=await supabase.auth.signUp({
+  email,
+  password,
+  options:{
+   emailRedirectTo:window.location.origin+window.location.pathname,
+   data:{
+    full_name:fullName,
+    account_type:accountType,
+    store_name:storeName,
+    phone:phone
+   }
+  }
+ });
+
+ if(error){
+  showStatus("Xatolik: "+error.message);
+  return;
+ }
+
+ if(data.session){
+  showStatus("Akkaunt yaratildi!");
+  if(accountType==="seller") await ensureSellerApplication();
+ }else{
+  showStatus("Akkaunt yaratildi. Emailingizni tasdiqlang, keyin tizimga kiring.");
+ }
+});
+
+/* TIZIMGA KIRISH */
+document.getElementById("loginBtn").addEventListener("click",async()=>{
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+
+ if(!email||!password){
+  showStatus("Email va parolni kiriting.");
+  return;
+ }
+
+ showStatus("Tizimga kirilmoqda...");
+
+ const {error}=await supabase.auth.signInWithPassword({
+  email,
+  password
+ });
+
+ if(error){
+  showStatus("Kirishda xatolik: "+error.message);
+  return;
+ }
+
+ showStatus("Tizimga muvaffaqiyatli kirdingiz!");
+ await ensureSellerApplication();
+});
+
+/* HISOBDAN CHIQISH */
+document.getElementById("logoutBtn").addEventListener("click",async()=>{
+ const {error}=await supabase.auth.signOut();
+ showStatus(error?"Xatolik: "+error.message:"Hisobdan chiqdingiz.");
+});
+
+/* OLDIN KIRGAN FOYDALANUVCHINI TEKSHIRISH */
+const {data:sessionData}=await supabase.auth.getSession();
+
+if(sessionData.session){
+ showStatus("Siz tizimga kirgansiz.");
+ await ensureSellerApplication();
+}
+</script>
+
 </body>
 </html>
